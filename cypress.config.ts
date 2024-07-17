@@ -5,15 +5,11 @@ export default defineConfig({
     setupNodeEvents(on, config) {
       // implement node event listeners here
     },
-    "baseUrl": "http://localhost:3000",
-    // "baseUrl": "http://localhost:3000"
+    baseUrl: "http://localhost:3000",
   },
-
-  component: {
-    devServer: {
-      framework: "react",
-      bundler: "vite",
-    },
+  env: {
+    API_URL: "http://localhost:3001",
+    fixturesFolder: false,
+    supportFile: false,
   },
-
 });
