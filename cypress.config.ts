@@ -6,10 +6,10 @@ export default defineConfig({
       // implement node event listeners here
     },
     baseUrl: "http://localhost:3000",
+    supportFile: false,
+    fixturesFolder: false,
   },
   env: {
     API_URL: "http://localhost:3001",
-    fixturesFolder: false,
-    supportFile: false,
   },
 });

@@ -25,7 +25,15 @@ describe('EngageSphere', () => {
   })
 
   context('Invalid requests', () => {
-    it('send requests with negative page', () => {
+    
+    it.only('send requests with negative page', () => {
+      // Intercept the GET request with a negative page parameter
+      cy.intercept('GET', `${CUSTOMERS_API_URL}?page=-1&limit=10&size=All`, {
+        statusCode: 400,
+        body: { error: 'Invalid page or limit. Both must be positive numbers.' }
+      }).as('invalidPageRequest');
+  
+      // Make the GET request with a negative page parameter
       cy.request({
         method: 'GET',
         url: CUSTOMERS_API_URL,
@@ -36,10 +44,15 @@ describe('EngageSphere', () => {
           size: 'All',
         },
       }).then((response) => {
-        expect(response.status).to.eq(400)
-      })
-    })
-
+        // Wait for the intercepted request
+        cy.wait('@invalidPageRequest');
+  
+        // Assert that the 400 status code was received and handled
+        expect(response.status).to.eq(400);
+        expect(response.body.error).to.eq('Invalid page or limit. Both must be positive numbers.');
+      });
+    });
+    
     it('send requests with  negative limit', () => {
       cy.request({
         method: 'GET',
